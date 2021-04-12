@@ -7,16 +7,16 @@ const travelSchema = new mongoose.Schema(
     city: String,
     date: String,
     description: String,
-    img: {
-      data: Buffer,
-      contentType: String,
-    },
+    cloudinary_asset_id: String,
+    cloudinary_public_id: String,
+    cloudinary_secure_url: String
+//    img: { type: String },
   },
   {
     timestamps: true,
   }
 );
 
-const TravelStory = mongoose.model("travel-story", travelSchema);
+const TravelStorySchema = mongoose.model("travel-story", travelSchema);
 
-module.exports = TravelStory;
+module.exports = TravelStorySchema;
