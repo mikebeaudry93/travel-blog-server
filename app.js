@@ -18,7 +18,7 @@ const path = require("path");
 require("dotenv/config");
 
 // Port
-const port = process.env.PORT || "5000";
+const port = process.env.PORT || 5000;
 
 // Middleware
 app.use(express.urlencoded({ extended: false }));
@@ -32,6 +32,7 @@ app.use("/auth", userUploadRouter);
 app.set("view engine", "ejs");
 
 app.listen(port, (err) => {
+  console.log(`Server started on port ${port}`);
   if (err) throw error;
   console.log("Server listening on port", port);
 });
