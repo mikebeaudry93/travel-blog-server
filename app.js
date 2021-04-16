@@ -18,20 +18,26 @@ const path = require("path");
 require("dotenv").config();
 
 // Port
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 5002;
 
 // Middleware
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cookieParser());
 
-mongoose.connect(
-  process.env.MONGO_URL,
-  { useNewUrlParser: true, useUnifiedTopology: true },
-  (err) => {
-    console.log("connected to MongoDB");
-  }
-);
+const connectMongoos = async() => {
+  const result = await mongoose.connect(
+    process.env.MONGO_URL,
+    { useNewUrlParser: true, useUnifiedTopology: true },
+    (err) => {
+      console.log("connected to MongoDB");
+    }
+  );
+
+  return result;
+}
+
+connectMongoos();
 
 app.use("/api", imageUploadRouter);
 app.use("/auth", userUploadRouter);
