@@ -31,7 +31,7 @@ mongoose.connect(
   (err) => {
     console.log("connected to MongoDB");
   }
-);
+).then(res => console.log('connected to MongoDB'));
 
 app.use("/api", imageUploadRouter);
 app.use("/auth", userUploadRouter);
