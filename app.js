@@ -25,6 +25,14 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cookieParser());
 
+mongoose.connect(
+  process.env.MONGO_URL,
+  { useNewUrlParser: true, useUnifiedTopology: true },
+  (err) => {
+    console.log("connected to MongoDB");
+  }
+);
+
 app.use("/api", imageUploadRouter);
 app.use("/auth", userUploadRouter);
 
@@ -36,11 +44,3 @@ app.listen(port, (err) => {
   if (err) throw error;
   console.log("Server listening on port", port);
 });
-
-mongoose.connect(
-  process.env.MONGO_URL,
-  { useNewUrlParser: true, useUnifiedTopology: true },
-  (err) => {
-    console.log("connected to MongoDB");
-  }
-);
