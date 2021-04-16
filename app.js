@@ -8,7 +8,7 @@ const cookieParser = require("cookie-parser");
 const cors = require("cors");
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: ["http://localhost:3000", "https://travellogger.netlify.app"],
     credentials: true,
   })
 );
