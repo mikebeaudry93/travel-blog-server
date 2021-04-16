@@ -15,7 +15,7 @@ app.use(
 
 const fs = require("fs");
 const path = require("path");
-require("dotenv/config");
+require("dotenv").config();
 
 // Port
 const port = process.env.PORT || 5000;

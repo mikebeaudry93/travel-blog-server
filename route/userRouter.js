@@ -90,7 +90,7 @@ userUploadRouter.post("/login", async (req, res) => {
 
     res.cookie("token", token, { httpOnly: true }).send();
   } catch (err) {
-    console.log(err.message)
+    console.log("ERROR MESSAGE", err.message)
     res.status(500).send();
   }
 });
