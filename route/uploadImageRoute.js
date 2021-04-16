@@ -1,20 +1,17 @@
 const imageUploadRouter = require("express").Router();
-
 const { UploadTravelStory } = require("../controller/uploadTravelStory");
-
 const upload = require("../middleware/cloudinary.config.js");
-
-const TravelStorySchema = require("../model");
-
+const TravelStorySchema = require("../modules/model");
 const cloudinary = require("../api/cloudinary");
+const auth = require("../middleware/auth");
 
 // Fs is filesystem
 const fs = require("fs").promises;
 
 // Get Request
-imageUploadRouter.get("/travel-post", async (req, res) => {
+imageUploadRouter.get("/travel-post", auth, async (req, res) => {
   try {
-    const memory = await TravelStorySchema.find();
+    const memory = await TravelStorySchema.find({ user: req.user });
     res.json(memory);
   } catch (err) {
     res.status(500).send();
@@ -28,6 +25,7 @@ imageUploadRouter.post(
     console.log("TRAVEL-POST BEFORE PARSE");
     next();
   },
+  auth,
   upload.single("img"),
   (req, res, next) => {
     console.log("TRAVEL-POST AFTER PARSE");
@@ -89,7 +87,6 @@ imageUploadRouter.post(
 imageUploadRouter.delete("/travel-post/:id", async (req, res) => {
   try {
     const postId = req.params.id;
-    console.log(postId);
 
     await new Promise((res, rej) => {
       cloudinary.v2.uploader.destroy(postId, (err, val) => {
@@ -98,11 +95,9 @@ imageUploadRouter.delete("/travel-post/:id", async (req, res) => {
       });
     });
 
-    const existingPost = await TravelStorySchema.findOneAndRemove({
+    const existingPost = await TravelStorySchema.findOneAndDelete({
       cloudinary_public_id: postId,
     });
-
-    console.log("existing post exists", existingPost);
 
     if (!existingPost) {
       return res.status(400).json({
@@ -110,6 +105,9 @@ imageUploadRouter.delete("/travel-post/:id", async (req, res) => {
           "No post was found with this Id. Please contact the developer.",
       });
     }
+
+    // if (existingPost.user.toString() !== req.user)
+    //   return res.status(401).json({ errorMessage: "Unauthorized." });
 
     // await existingPost.delete();
     res.json(existingPost);

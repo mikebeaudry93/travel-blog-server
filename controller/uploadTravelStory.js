@@ -1,4 +1,4 @@
-const TravelStorySchema = require("../model");
+const TravelStorySchema = require("../modules/model");
 
 const cloudinary = require("../api/cloudinary");
 
@@ -33,6 +33,7 @@ const UploadTravelStory = async (req, res) => {
       cloudinary_asset_id: uploadedFile.asset_id,
       cloudinary_public_id: uploadedFile.public_id,
       cloudinary_secure_url: uploadedFile.secure_url,
+      user: req.user,
     });
 
     const savedTravelStory = await travelStoryUploaded.save();
@@ -43,7 +44,7 @@ const UploadTravelStory = async (req, res) => {
     res.json(savedTravelStory);
   } catch (error) {
     return res.status(400).json({
-      message: `image upload failed, check ot see the ${error}`,
+      message: `image upload failed, check to see the ${error}`,
       status: "error",
     });
   }

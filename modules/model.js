@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const ObjectId = mongoose.Schema.Types.ObjectId;
 
 const travelSchema = new mongoose.Schema(
   {
@@ -9,8 +10,8 @@ const travelSchema = new mongoose.Schema(
     description: String,
     cloudinary_asset_id: String,
     cloudinary_public_id: String,
-    cloudinary_secure_url: String
-//    img: { type: String },
+    cloudinary_secure_url: String,
+    user: { type: ObjectId, required: true },
   },
   {
     timestamps: true,
