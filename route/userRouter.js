@@ -1,7 +1,8 @@
 const userUploadRouter = require("express").Router();
-const User = require("../modules/userModel");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const User = require("../modules/userModel");
+const auth = require("../middleware/auth");
 
 userUploadRouter.post("/", async (req, res) => {
   try {
@@ -49,7 +50,7 @@ userUploadRouter.post("/", async (req, res) => {
       process.env.JWT_SECRET
     );
 
-    res.cookie("token", token, { httpOnly: true }).send();
+    res.send({ token });
   } catch (err) {
     res.status(500).send();
   }
@@ -87,32 +88,18 @@ userUploadRouter.post("/login", async (req, res) => {
       process.env.JWT_SECRET
     );
 
-    res.cookie("token", token, { httpOnly: true }).send();
+    res.send({ token });
   } catch (err) {
-    console.log("ERROR MESSAGE", err.message)
+    console.log("ERROR MESSAGE", err.message);
     res.status(500).send();
   }
 });
 
-userUploadRouter.get("/loggedIn", (req, res) => {
+userUploadRouter.get("/loggedIn", auth, (req, res) => {
   try {
-    const token = req.cookies.token;
-
-    if (!token) return res.json(null);
-
-    const validatedUser = jwt.verify(token, process.env.JWT_SECRET);
-
-    res.json(validatedUser.id);
+    res.json(req.user);
   } catch (err) {
     res.json(null);
-  }
-});
-
-userUploadRouter.get("/logOut", (req, res) => {
-  try {
-    res.clearCookie("token").send();
-  } catch (err) {
-    res.send(err);
   }
 });
 
