@@ -25,19 +25,35 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cookieParser());
 
-const connectMongoos = async() => {
-  const result = await mongoose.connect(
-    process.env.MONGO_URL,
-    { useNewUrlParser: true, useUnifiedTopology: true, bufferCommands: true },
-    (err) => {
-      console.log("connected to MongoDB");
-    }
-  );
-
-  return result;
+async function connectMongoose() {
+  try {
+    await mongoose.connect(
+      process.env.MONGO_URL,
+      { useNewUrlParser: true, useUnifiedTopology: true, bufferCommands: true },
+      (err) => {
+        console.log("connected to MongoDB");
+      }
+    );
+  } catch (err) {
+    console.log("error");
+  }
 }
 
-connectMongoos();
+connectMongoose();
+
+// const connectMongoos = async () => {
+//   const result = await mongoose.connect(
+//     process.env.MONGO_URL,
+//     { useNewUrlParser: true, useUnifiedTopology: true, bufferCommands: true },
+//     (err) => {
+//       console.log("connected to MongoDB");
+//     }
+//   );
+
+//   return result;
+// };
+
+// connectMongoos();
 
 app.use("/api", imageUploadRouter);
 app.use("/auth", userUploadRouter);
