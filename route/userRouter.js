@@ -2,7 +2,6 @@ const userUploadRouter = require("express").Router();
 const User = require("../modules/userModel");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-require("dotenv").config();
 
 userUploadRouter.post("/", async (req, res) => {
   try {
