@@ -4,8 +4,7 @@ function auth(req, res, next) {
   try {
     const token = req.headers.authorization;
 
-    if (!token)
-      return res.status(401).json({ errorMessage: "Unffffauthorized." });
+    if (!token) return res.status(401).json({ errorMessage: "Unauthorized." });
 
     const validatedUser = jwt.verify(token, process.env.JWT_SECRET);
     req.user = validatedUser.id;
