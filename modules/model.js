@@ -12,6 +12,7 @@ const travelSchema = new mongoose.Schema(
     cloudinary_public_id: String,
     cloudinary_secure_url: String,
     user: { type: ObjectId, required: true },
+    likes: [{ type: ObjectId, ref: "user" }],
   },
   {
     timestamps: true,

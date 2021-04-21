@@ -30,14 +30,12 @@ async function startApp() {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       bufferCommands: true,
+      useFindAndModify: false,
     });
     console.log(`Database connected`);
 
     app.use("/api", imageUploadRouter);
     app.use("/auth", userUploadRouter);
-
-    // // Set EJS templating engine
-    // app.set("view engine", "ejs");
 
     app.listen(port, (err) => {
       console.log(`Server started on port ${port}`);
@@ -50,17 +48,3 @@ async function startApp() {
 }
 
 startApp();
-
-// const connectMongoos = async () => {
-//   const result = await mongoose.connect(
-//     process.env.MONGO_URL,
-//     { useNewUrlParser: true, useUnifiedTopology: true, bufferCommands: true },
-//     (err) => {
-//       console.log("connected to MongoDB");
-//     }
-//   );
-
-//   return result;
-// };
-
-// connectMongoos();

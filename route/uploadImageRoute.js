@@ -8,6 +8,16 @@ const auth = require("../middleware/auth");
 // Fs is filesystem
 const fs = require("fs").promises;
 
+// Get all posts
+imageUploadRouter.get("/all-travel-posts", auth, async (req, res) => {
+  try {
+    const allTravelPosts = await TravelStorySchema.find();
+    res.json(allTravelPosts);
+  } catch (err) {
+    res.status(500).send();
+  }
+});
+
 // Get Request
 imageUploadRouter.get("/travel-post", auth, async (req, res) => {
   try {
@@ -111,6 +121,32 @@ imageUploadRouter.delete("/travel-post/:id", async (req, res) => {
 
     // await existingPost.delete();
     res.json(existingPost);
+  } catch (err) {
+    res.status(500).send();
+  }
+});
+
+imageUploadRouter.put("/like", auth, async (req, res) => {
+  try {
+    const updatedPost = await TravelStorySchema.findByIdAndUpdate(
+      req.body._id,
+      { $push: { likes: req.user} },
+      { new: true }
+    );
+    res.json(updatedPost);
+  } catch (err) {
+    res.status(500).send();
+  }
+});
+
+imageUploadRouter.put("/unlike", auth, async (req, res) => {
+  try {
+    const updatedPost = await TravelStorySchema.findByIdAndUpdate(
+      req.body._id,
+      { $pull: { likes: req.user} },
+      { new: true }
+    );
+    res.json(updatedPost);
   } catch (err) {
     res.status(500).send();
   }
